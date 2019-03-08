@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "ws-flare-ui.fullname" . }}
+  labels:
+    app: {{ template "ws-flare-ui.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "ws-flare-ui.fullname" . }}
+    spec:
+      containers:
+        - name: {{ template "ws-flare-ui.fullname" . }}
+          image: {{ .Values.wsFlareUiImage }}
+          imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+          ports:
+            - containerPort: 80
+          env:
+            - name: PORT
+              value: "80"
+          resources:
+            requests:
+              memory: 80Mi
+              cpu: 10m

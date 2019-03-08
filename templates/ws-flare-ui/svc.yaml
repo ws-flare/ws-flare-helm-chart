@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "ws-flare-ui.fullname" . }}
+  labels:
+    app: {{ template "ws-flare-ui.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  type: ClusterIP
+  ports:
+    - name: {{ template "ws-flare-ui.fullname" . }}
+      port: 80
+      targetPort: 80
+  selector:
+    app: {{ template "ws-flare-ui.fullname" . }}
