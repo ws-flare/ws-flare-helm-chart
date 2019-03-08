@@ -1,0 +1,4 @@
+apiVersion: v1
+description: ws-flare-helm-chart
+name: ws-flare-helm-chart
+version: 0.1.1

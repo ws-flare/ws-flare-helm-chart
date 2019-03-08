@@ -1,0 +1,9 @@
+environment: dev
+
+wsFlareUserApiImage: wsflare/ws-flare-user-api:2
+
+### Messaging
+messagingRabbitmqImage: bitnami/rabbitmq:3.7.7-debian-9
+
+serviceType: ClusterIP
+ImagePullPolicy: Always

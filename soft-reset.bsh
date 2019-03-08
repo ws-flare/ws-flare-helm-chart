@@ -1,0 +1,13 @@
+#!/bin/sh
+
+helm delete --purge test
+
+sleep 5s
+
+kubectl -n default delete po,pvc,svc,deployments --all
+
+helm init --upgrade --wait
+
+helm install . --name test
+
+minikube dashboard

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+minikube delete
+
+minikube config set cpus 4
+minikube config set memory 8192
+
+minikube start --cpus 4 --memory 8192 --vm-driver=kvm2
+eval $(minikube docker-env)
+minikube config set use-vendored-driver true
+minikube addons enable ingress
+minikube addons enable heapster
+kubectl create secret docker-registry myregistrykey --docker-server=registry.gitlab.com --docker-username=el-davo --docker-password=nKCzBkaGmC-4xr4Cwto9 --docker-email=david.ahern26@gmail.com
+helm init --upgrade --wait
+
+helm install . --name test --set environment=dev
+minikube dashboard
