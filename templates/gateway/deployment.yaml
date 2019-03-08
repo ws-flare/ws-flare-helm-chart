@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "ws-flare-gateway.fullname" . }}
+  labels:
+    app: {{ template "ws-flare-gateway.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "ws-flare-gateway.fullname" . }}
+    spec:
+      imagePullSecrets:
+        - name: myregistrykey
+      containers:
+        - name: {{ template "ws-flare-gateway.fullname" . }}
+          image: {{ .Values.wsFlareGatewayImage }}
+          imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+          ports:
+            - containerPort: 80
+          env:
+            - name: LOG_LEVEL
+              value: debug
+            - name: GRAPHQL_URL
+              value: http://{{ template "ws-flare-graphql.fullname" . }}
+            - name: WS_URL
+              value: http://{{ template "ws-flare-graphql.fullname" . }}:3000/
+            - name: UI_URL
+              value: http://{{ template "ws-flare-ui.fullname" . }}
+          resources:
+            requests:
+              memory: 80Mi
+              cpu: 10m

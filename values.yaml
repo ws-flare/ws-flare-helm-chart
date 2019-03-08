@@ -1,5 +1,6 @@
 environment: dev
 
+wsFlareGatewayImage: wsflare/ws-flare-gateway:1
 wsFlareUserApiImage: wsflare/ws-flare-user-api:2
 
 ### Messaging

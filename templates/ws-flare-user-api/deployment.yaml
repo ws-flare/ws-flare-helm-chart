@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: {{ template "ws-flare-user-api.fullname" . }}
-          image: "{{ .Values.wsFlareUserApiImage }}"
+          image: {{ .Values.wsFlareUserApiImage }}
           imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
           ports:
             - containerPort: 80
