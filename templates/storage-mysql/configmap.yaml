@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "storage-mysql.fullname" . }}
+  labels:
+    app: {{ template "storage-mysql.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+data:
+{{ toYaml .Values.mysqlha.configFiles | indent 2 }}
+  server-id.cnf: |
+    [mysqld]
+    server-id=@@SERVER_ID@@
+  create-replication-user.sh: |
+    #!/bin/bash
+    set -e
+
+    mysql -h 127.0.0.1 --verbose -e "CREATE USER IF NOT EXISTS '${MYSQL_REPLICATION_USER}' IDENTIFIED BY '${MYSQL_REPLICATION_PASSWORD}';"
+    mysql -h 127.0.0.1 --verbose -e "GRANT PROCESS, RELOAD, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO '${MYSQL_REPLICATION_USER}';"
+    mysql -h 127.0.0.1 --verbose -e "FLUSH PRIVILEGES;"
+  create-databases.sh: |
+    mysql -h 127.0.0.1 --verbose -e "CREATE DATABASE IF NOT EXISTS projects;"
+
+    mysql -h 127.0.0.1 --verbose -e "GRANT CREATE, SELECT, UPDATE, INSERT, DELETE, EXECUTE ON projects.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+
+    mysql -h 127.0.0.1 --verbose -e "FLUSH PRIVILEGES;"

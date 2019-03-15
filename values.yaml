@@ -3,9 +3,37 @@ environment: dev
 wsFlareGatewayImage: wsflare/ws-flare-gateway:1
 wsFlareUiImage: wsflare/ws-flare-ui:1
 wsFlareUserApiImage: wsflare/ws-flare-user-api:2
+wsFlareProjectsApiImage: wsflare/ws-flare-projects-api:14
+
+### Storage
+storageMysqlImage: mysql:5.7.13
+storageXtraBackupImage: gcr.io/google-samples/xtrabackup:1.0
 
 ### Messaging
 messagingRabbitmqImage: bitnami/rabbitmq:3.7.7-debian-9
 
 serviceType: ClusterIP
 ImagePullPolicy: Always
+
+mysqlha:
+  replicaCount: 2
+  mysqlRootPassword: TSKSg5F4
+  mysqlReplicationUser: repl
+  mysqlReplicationPassword: a9q8mJXBZj
+  mysqlUser: qrVEtzcumS
+  mysqlPassword: rapXt9ryzn
+  configFiles:
+    master.cnf: |
+      # Apply this config only on the master.
+      [mysqld]
+      log-bin
+      skip_name_resolve
+    slave.cnf: |
+      # Apply this config only on slaves.
+      [mysqld]
+      super-read-only
+      skip_name_resolve
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
