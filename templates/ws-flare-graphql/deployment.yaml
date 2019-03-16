@@ -1,0 +1,52 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "ws-flare-graphql.fullname" . }}
+  labels:
+    app: {{ template "ws-flare-graphql.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "ws-flare-graphql.fullname" . }}
+    spec:
+      containers:
+        - name: {{ template "ws-flare-graphql.fullname" . }}
+          image: "{{ .Values.wsFlareGraphql }}"
+          imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+          ports:
+            - containerPort: 80
+            - containerPort: 3000
+          env:
+            - name: LOG_LEVEL
+              value: debug
+            - name: HOST
+              value: "0.0.0.0"
+            - name: PORT
+              value: "80"
+            - name: USER_API
+              value: http://{{ template "ws-flare-user-api.fullname" . }}
+            - name: PROJECTS_API
+              value: http://{{ template "ws-flare-projects-api.fullname" . }}
+            - name: JOBS_API
+              value: http://{{ template "ws-flare-jobs-api.fullname" . }}
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: ws-flare-jwt-secret
+                  key: JWT_SECRET
+          resources:
+            requests:
+              memory: 80Mi
+              cpu: 10m
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 180
+          readinessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 10

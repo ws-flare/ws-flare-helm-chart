@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "ws-flare-graphql.fullname" . }}
+  labels:
+    app: {{ template "ws-flare-graphql.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  type: NodePort
+  ports:
+    - name: {{ template "ws-flare-graphql.fullname" . }}
+      port: 80
+      targetPort: 80
+      protocol: TCP
+    - name: {{ template "ws-flare-graphql.fullname" . }}-ws
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+  selector:
+    app: {{ template "ws-flare-graphql.fullname" . }}
