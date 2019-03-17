@@ -35,3 +35,12 @@
 {{- define "storage-mysql.fullname" -}}
 {{- printf "%s-storage-mysql" .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+###############################################################################################
+#
+#    Messaging
+#
+###############################################################################################
+{{- define "messaging-rabbitmq.fullname" -}}
+{{- printf "%s-messaging-rabbitmq" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}

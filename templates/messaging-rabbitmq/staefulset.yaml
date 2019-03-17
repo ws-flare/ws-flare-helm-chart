@@ -1,0 +1,142 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: {{ template "messaging-rabbitmq.fullname" . }}
+  labels:
+    app: {{ template "messaging-rabbitmq.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  serviceName: {{ template "messaging-rabbitmq.fullname" . }}
+  replicas: {{ .Values.rabbitmq.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "messaging-rabbitmq.fullname" . }}
+      release: "{{ .Release.Name }}"
+      chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  template:
+    metadata:
+      labels:
+        app: {{ template "messaging-rabbitmq.fullname" . }}
+        release: "{{ .Release.Name }}"
+        chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      serviceAccountName: {{ template "messaging-rabbitmq.fullname" . }}
+      affinity:
+{{ toYaml .Values.rabbitmq.affinity | indent 8 }}
+      nodeSelector:
+{{ toYaml .Values.rabbitmq.nodeSelector | indent 8 }}
+      tolerations:
+{{ toYaml .Values.rabbitmq.tolerations | indent 8 }}
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: {{ template "messaging-rabbitmq.fullname" . }}
+          image: "{{ .Values.messagingRabbitmqImage }}"
+          imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+          command:
+            - bash
+            - -ec
+            - |
+              #persist the erlang cookie in both places for server and cli tools
+              echo $RABBITMQ_ERL_COOKIE > /opt/bitnami/rabbitmq/var/lib/rabbitmq/.erlang.cookie
+              cp /opt/bitnami/rabbitmq/var/lib/rabbitmq/.erlang.cookie /opt/bitnami/rabbitmq/.rabbitmq/
+              #change permission so only the user has access to the cookie file
+              chmod 600 /opt/bitnami/rabbitmq/.rabbitmq/.erlang.cookie
+              chmod 600 /opt/bitnami/rabbitmq/var/lib/rabbitmq/.erlang.cookie
+              #copy the mounted configuration to both places
+              cp  /opt/bitnami/rabbitmq/conf/* /opt/bitnami/rabbitmq/etc/rabbitmq
+              #replace the default password that is generated
+              sed -i "s/CHANGEME/$RABBITMQ_PASSWORD/g" /opt/bitnami/rabbitmq/etc/rabbitmq/rabbitmq.conf
+              exec rabbitmq-server
+          resources:
+            requests:
+              memory: 80Mi
+              cpu: 10m
+          volumeMounts:
+            - name: config-volume
+              mountPath: /opt/bitnami/rabbitmq/conf
+            - name: data
+              mountPath: /opt/bitnami/rabbitmq/var/lib/rabbitmq/
+          ports:
+            - name: epmd
+              containerPort: 4369
+            - name: amqp
+              containerPort: 5672
+            - name: dist
+              containerPort: 25672
+            - name: stats
+              containerPort: 15672
+          livenessProbe:
+            exec:
+              command:
+                - rabbitmqctl
+                - status
+            initialDelaySeconds: 120
+            timeoutSeconds: 5
+            periodSeconds: 5
+            failureThreshold: 6
+            successThreshold: 1
+          readinessProbe:
+            exec:
+              command:
+                - rabbitmqctl
+                - status
+            initialDelaySeconds: 10
+            timeoutSeconds: 3
+            periodSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          env:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: RABBITMQ_USE_LONGNAME
+              value: "true"
+            - name: RABBITMQ_NODENAME
+              value: "rabbit@$(MY_POD_IP)"
+            - name: K8S_SERVICE_NAME
+              value: {{ template "messaging-rabbitmq.fullname" . }}
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "messaging-rabbitmq.fullname" . }}
+                  key: rabbitmq-password
+            - name: RABBITMQ_ERL_COOKIE
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "messaging-rabbitmq.fullname" . }}
+                  key: rabbitmq-erlang-cookie
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ template "messaging-rabbitmq.fullname" . }}-config
+            items:
+            - key: rabbitmq.conf
+              path: rabbitmq.conf
+            - key: enabled_plugins
+              path: enabled_plugins
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        annotations:
+          volume.alpha.kubernetes.io/storage-class: anything
+        labels:
+          app: {{ template "messaging-rabbitmq.fullname" . }}
+          chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+          release: "{{ .Release.Name }}"
+          heritage: "{{ .Release.Service }}"
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            {{ if eq .Values.environment "dev" }}
+            storage: 1Gi
+            {{- else }}
+              storage: 10Gi
+              {{ end }}

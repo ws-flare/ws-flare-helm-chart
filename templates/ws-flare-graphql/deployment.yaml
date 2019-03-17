@@ -33,6 +33,17 @@ spec:
               value: http://{{ template "ws-flare-projects-api.fullname" . }}
             - name: JOBS_API
               value: http://{{ template "ws-flare-jobs-api.fullname" . }}
+            - name: AMQP_URL
+              value: {{ template "messaging-rabbitmq.fullname" . }}
+            - name: AMQP_PORT
+              value: "5672"
+            - name: AMQP_USER
+              value: {{ .Values.rabbitmq.username}}
+            - name: AMQP_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "messaging-rabbitmq.fullname" . }}
+                  key: rabbitmq-password
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
