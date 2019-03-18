@@ -1,0 +1,47 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "ws-flare-orchestration-api.fullname" . }}
+  labels:
+    app: {{ template "ws-flare-orchestration-api.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "ws-flare-orchestration-api.fullname" . }}
+    spec:
+      containers:
+        - name: {{ template "ws-flare-orchestration-api.fullname" . }}
+          image: {{ .Values.wsFlareOrchestrationApiImage }}
+          imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+          ports:
+            - containerPort: 80
+          env:
+            - name: PORT
+              value: "80"
+            - name: USER_API
+              value: http://{{ template "ws-flare-user-api.fullname" . }}
+            - name: PROJECTS_API
+              value: http://{{ template "ws-flare-projects-api.fullname" . }}
+            - name: JOBS_API
+              value: http://{{ template "ws-flare-jobs-api.fullname" . }}
+            - name: TEST_IMAGE
+              value: ""
+            - name: AMQP_URL
+              value: {{ template "messaging-rabbitmq.fullname" . }}
+            - name: AMQP_PORT
+              value: "5672"
+            - name: AMQP_USER
+              value: {{ .Values.rabbitmq.username}}
+            - name: AMQP_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "messaging-rabbitmq.fullname" . }}
+                  key: rabbitmq-password
+          resources:
+            requests:
+              memory: 80Mi
+              cpu: 10m

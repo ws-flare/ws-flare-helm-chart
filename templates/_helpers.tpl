@@ -27,6 +27,10 @@
 {{- printf "%s-ws-flare-jobs-api" .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "ws-flare-orchestration-api.fullname" -}}
+{{- printf "%s-ws-flare-orchestration-api" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 ###############################################################################################
 #
 #    Databases
