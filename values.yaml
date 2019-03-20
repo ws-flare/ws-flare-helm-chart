@@ -6,7 +6,7 @@ wsFlareUserApiImage: wsflare/ws-flare-user-api:2
 wsFlareProjectsApiImage: wsflare/ws-flare-projects-api:18
 wsFlareJobsApiImage: wsflare/ws-flare-jobs-api:2
 wsFlareGraphql: wsflare/ws-flare-graphql:14
-wsFlareOrchestrationApiImage: wsflare/ws-flare-orchestration-api:7
+wsFlareOrchestrationApiImage: wsflare/ws-flare-orchestration-api:9
 
 ### Storage
 storageMysqlImage: mysql:5.7.13
