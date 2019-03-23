@@ -29,7 +29,7 @@ spec:
             - name: JOBS_API
               value: http://{{ template "ws-flare-jobs-api.fullname" . }}
             - name: TEST_IMAGE
-              value: "wsflare/ws-flare-test-client:7"
+              value: "wsflare/ws-flare-test-client:8"
             - name: AMQP_URL
               value: {{ template "messaging-rabbitmq.fullname" . }}
             - name: AMQP_PORT
