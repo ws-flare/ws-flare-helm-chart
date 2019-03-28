@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "ws-flare-cloud-foundry-monitor-api.fullname" . }}
+  labels:
+    app: {{ template "ws-flare-cloud-foundry-monitor-api.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  template:
+    metadata:
+      labels:
+        app: {{ template "ws-flare-cloud-foundry-monitor-api.fullname" . }}
+    spec:
+      containers:
+        - name: {{ template "ws-flare-cloud-foundry-monitor-api.fullname" . }}
+          image: {{ .Values.wsFlareCloudFoundryMonitorApiImage }}
+          imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+          ports:
+            - containerPort: 80
+          env:
+            - name: HOST
+              value: "0.0.0.0"
+            - name: PORT
+              value: "80"
+            - name: MYSQL_HOST
+              value: "{{ template "storage-mysql.fullname" . }}-0.{{ template "storage-mysql.fullname" . }}"
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_USERNAME
+              value: {{ .Values.mysqlha.mysqlUser | quote }}
+            - name: MYSQL_PASSWORD
+              value: {{ .Values.mysqlha.mysqlPassword | quote }}
+          resources:
+            requests:
+              memory: 80Mi
+              cpu: 10m

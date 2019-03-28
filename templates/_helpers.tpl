@@ -31,6 +31,10 @@
 {{- printf "%s-ws-flare-orchestration-api" .Release.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{- define "ws-flare-cloud-foundry-monitor-api.fullname" -}}
+{{- printf "%s-ws-flare-cloud-foundry-monitor-api" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 ###############################################################################################
 #
 #    Databases
