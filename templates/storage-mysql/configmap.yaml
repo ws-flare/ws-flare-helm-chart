@@ -25,9 +25,9 @@ data:
     mysql -h 127.0.0.1 --verbose -e "CREATE DATABASE IF NOT EXISTS wsFlareJobsApi;"
     mysql -h 127.0.0.1 --verbose -e "CREATE DATABASE IF NOT EXISTS wsFlareCloudFoundryMonitorApi;"
 
-    mysql -h 127.0.0.1 --verbose -e "GRANT CREATE, SELECT, UPDATE, INSERT, DELETE, EXECUTE ON wsFlareUsersApi.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
-    mysql -h 127.0.0.1 --verbose -e "GRANT CREATE, SELECT, UPDATE, INSERT, DELETE, EXECUTE ON wsFlareProjectsApi.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
-    mysql -h 127.0.0.1 --verbose -e "GRANT CREATE, SELECT, UPDATE, INSERT, DELETE, EXECUTE ON wsFlareJobsApi.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
-    mysql -h 127.0.0.1 --verbose -e "GRANT CREATE, SELECT, UPDATE, INSERT, DELETE, EXECUTE ON wsFlareCloudFoundryMonitorApi.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+    mysql -h 127.0.0.1 --verbose -e "GRANT CREATE, SELECT, UPDATE, INSERT, DELETE, EXECUTE, ALTER ON wsFlareUsersApi.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+    mysql -h 127.0.0.1 --verbose -e "GRANT CREATE, SELECT, UPDATE, INSERT, DELETE, EXECUTE, ALTER ON wsFlareProjectsApi.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+    mysql -h 127.0.0.1 --verbose -e "GRANT CREATE, SELECT, UPDATE, INSERT, DELETE, EXECUTE, ALTER ON wsFlareJobsApi.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
+    mysql -h 127.0.0.1 --verbose -e "GRANT CREATE, SELECT, UPDATE, INSERT, DELETE, EXECUTE, ALTER ON wsFlareCloudFoundryMonitorApi.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';"
 
     mysql -h 127.0.0.1 --verbose -e "FLUSH PRIVILEGES;"
