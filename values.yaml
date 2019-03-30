@@ -7,7 +7,7 @@ wsFlareProjectsApiImage: wsflare/ws-flare-projects-api:19
 wsFlareJobsApiImage: wsflare/ws-flare-jobs-api:5
 wsFlareGraphql: wsflare/ws-flare-graphql:21
 wsFlareOrchestrationApiImage: wsflare/ws-flare-orchestration-api:24
-wsFlareCloudFoundryMonitorApiImage: wsflare/ws-flare-cloud-foundry-monitor-api:6
+wsFlareCloudFoundryMonitorApiImage: wsflare/ws-flare-cloud-foundry-monitor-api:7
 
 ### Storage
 storageMysqlImage: mysql:5.7.13
