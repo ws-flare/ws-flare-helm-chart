@@ -33,6 +33,8 @@ spec:
               value: http://{{ template "ws-flare-projects-api.fullname" . }}
             - name: JOBS_API
               value: http://{{ template "ws-flare-jobs-api.fullname" . }}
+            - name: MONITOR_API
+              value: http://{{ template "ws-flare-cloud-foundry-monitor-api.fullname" . }}
             - name: AMQP_URL
               value: {{ template "messaging-rabbitmq.fullname" . }}
             - name: AMQP_PORT
