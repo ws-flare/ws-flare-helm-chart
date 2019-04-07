@@ -31,7 +31,7 @@ spec:
             - name: MONITOR_API
               value: http://{{ template "ws-flare-cloud-foundry-monitor-api.fullname" . }}
             - name: TEST_IMAGE
-              value: "wsflare/ws-flare-test-client:14"
+              value: "wsflare/ws-flare-test-client:23"
             - name: CF_MONITOR_IMAGE
               value: "wsflare/ws-flare-cloudfoundry-monitor-client:13"
             - name: AMQP_URL
