@@ -1,13 +1,13 @@
 environment: dev
 
 wsFlareGatewayImage: wsflare/ws-flare-gateway:1
-wsFlareUiImage: wsflare/ws-flare-ui:54
-wsFlareUserApiImage: wsflare/ws-flare-user-api:2
-wsFlareProjectsApiImage: wsflare/ws-flare-projects-api:21
-wsFlareJobsApiImage: wsflare/ws-flare-jobs-api:8
-wsFlareGraphql: wsflare/ws-flare-graphql:39
-wsFlareOrchestrationApiImage: wsflare/ws-flare-orchestration-api:33
-wsFlareCloudFoundryMonitorApiImage: wsflare/ws-flare-cloud-foundry-monitor-api:7
+wsFlareUiImage: wsflare/ws-flare-ui:62
+wsFlareUserApiImage: wsflare/ws-flare-user-api:4
+wsFlareProjectsApiImage: wsflare/ws-flare-projects-api:23
+wsFlareJobsApiImage: wsflare/ws-flare-jobs-api:12
+wsFlareGraphql: wsflare/ws-flare-graphql:41
+wsFlareOrchestrationApiImage: wsflare/ws-flare-orchestration-api:38
+wsFlareCloudFoundryMonitorApiImage: wsflare/ws-flare-cloud-foundry-monitor-api:9
 
 ### Storage
 storageMysqlImage: mysql:5.7.13
