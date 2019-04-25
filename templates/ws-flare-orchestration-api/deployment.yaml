@@ -33,7 +33,7 @@ spec:
             - name: TEST_IMAGE
               value: "wsflare/ws-flare-test-client:28"
             - name: CF_MONITOR_IMAGE
-              value: "wsflare/ws-flare-cloudfoundry-monitor-client:15"
+              value: "wsflare/ws-flare-cloudfoundry-monitor-client:16"
             - name: AMQP_URL
               value: {{ template "messaging-rabbitmq.fullname" . }}
             - name: AMQP_PORT
