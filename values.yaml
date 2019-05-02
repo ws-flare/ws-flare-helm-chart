@@ -3,10 +3,10 @@ environment: dev
 wsFlareGatewayImage: wsflare/ws-flare-gateway:1
 wsFlareUiImage: wsflare/ws-flare-ui:72
 wsFlareUserApiImage: wsflare/ws-flare-user-api:8
-wsFlareProjectsApiImage: wsflare/ws-flare-projects-api:23
+wsFlareProjectsApiImage: wsflare/ws-flare-projects-api:24
 wsFlareJobsApiImage: wsflare/ws-flare-jobs-api:12
-wsFlareGraphql: wsflare/ws-flare-graphql:52
-wsFlareOrchestrationApiImage: wsflare/ws-flare-orchestration-api:38
+wsFlareGraphql: wsflare/ws-flare-graphql:53
+wsFlareOrchestrationApiImage: wsflare/ws-flare-orchestration-api:40
 wsFlareCloudFoundryMonitorApiImage: wsflare/ws-flare-cloud-foundry-monitor-api:11
 
 ### Storage
