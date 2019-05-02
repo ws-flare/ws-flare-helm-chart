@@ -24,6 +24,14 @@ spec:
               value: "0.0.0.0"
             - name: PORT
               value: "80"
+            - name: MYSQL_HOST
+              value: "{{ template "storage-mysql.fullname" . }}-0.{{ template "storage-mysql.fullname" . }}"
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_USERNAME
+              value: {{ .Values.mysqlha.mysqlUser | quote }}
+            - name: MYSQL_PASSWORD
+              value: {{ .Values.mysqlha.mysqlPassword | quote }}
             - name: JWT_SECRET
               valueFrom:
                 secretKeyRef:
