@@ -1,7 +1,7 @@
 environment: dev
 
 wsFlareGatewayImage: wsflare/ws-flare-gateway:1
-wsFlareUiImage: wsflare/ws-flare-ui:72
+wsFlareUiImage: wsflare/ws-flare-ui:78
 wsFlareUserApiImage: wsflare/ws-flare-user-api:8
 wsFlareProjectsApiImage: wsflare/ws-flare-projects-api:24
 wsFlareJobsApiImage: wsflare/ws-flare-jobs-api:12
